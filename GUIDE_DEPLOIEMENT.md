@@ -74,6 +74,65 @@ define('DB_PASS', 'PASSWORD');             // Ex: abc123XYZ
 
 ---
 
+## OPTION A2 : Déploiement automatique via GitHub (recommandé)
+
+Si vous voulez déployer plus rapidement et sans re-upload manuel, utilisez GitHub comme source et un workflow GitHub Actions pour envoyer automatiquement les fichiers à 000webhost.
+
+### A2.1 Préparer le dépôt GitHub
+1. Assurez-vous que le code est dans un repo GitHub.
+2. Le repository doit contenir :
+   - `public/` pour les fichiers web
+   - `api/` pour la connexion MySQL
+   - `sql/` pour le schéma
+   - `.github/workflows/deploy-000webhost.yml`
+
+### A2.2 Ajouter les secrets GitHub
+1. Sur GitHub, ouvrez votre repo → **Settings** → **Secrets and variables** → **Actions**.
+2. Ajouter ces secrets :
+   - `FTP_HOST` (ex: `ftp.000webhost.com`)
+   - `FTP_USERNAME`
+   - `FTP_PASSWORD`
+   - `FTP_PORT` (optionnel, par défaut `21`)
+
+### A2.3 Explication du workflow
+- À chaque push vers `main`, GitHub exécute un workflow
+- Il envoie :
+  - le contenu de `public/` vers `/public_html`
+  - le contenu de `api/` vers `/public_html/api`
+
+### A2.4 Déployer avec Git
+1. Pousser vos modifications sur `main` :
+```powershell
+git add .
+git commit -m "Deployment update"
+git push origin main
+```
+2. GitHub lance automatiquement le déploiement.
+3. Vérifiez l’état de l’action dans `Actions` sur GitHub.
+
+### A2.5 Vérifier le site
+- Ouvrez `http://monlms.000webhostapp.com/`
+- Si le site ne s’affiche pas, vérifiez :
+  - `api/config.php` sur 000webhost
+  - la présence de `public_html/index.php`
+  - les logs GitHub Action pour les erreurs FTP
+
+---
+## FINALISATION ET LIEN PUBLIC
+
+### Lien final
+- Si vous avez déployé le contenu dans `public_html/`, l’URL est :
+  - `https://votresite.000webhostapp.com/`
+- Si vous avez déployé dans `public_html/lms_platform/`, l’URL devient :
+  - `https://votresite.000webhostapp.com/lms_platform/`
+
+### Contrôles finaux
+- Vérifiez que `api/config.php` est bien configuré
+- Vérifiez que les dossiers `uploads/`, `uploads/pdfs/`, `uploads/videos/`, `uploads/certs/` existent en ligne
+- Vérifiez que le workflow GitHub Action a été exécuté sans erreur
+- Si le site est accessible, faites un test d’inscription et de login immédiatement
+
+---
 ## OPTION B : InfinityFree (Alternative)
 
 ### B1. Créer compte

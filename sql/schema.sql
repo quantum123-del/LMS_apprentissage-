@@ -3,6 +3,8 @@
 CREATE DATABASE IF NOT EXISTS lms_platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE lms_platform;
 
+DROP TABLE IF EXISTS certificates, enrollments, answers, attempts, choices, questions, quizzes, lessons, modules, courses, users;
+
 CREATE TABLE users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(150) NOT NULL,
