@@ -1,0 +1,5 @@
+# Ignore uploaded lesson files and certificates
+public/uploads/
+
+# Ignore local configuration if used
+api/config.php
